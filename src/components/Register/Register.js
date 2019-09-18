@@ -10,22 +10,36 @@ class Register extends React.Component {
     }
   }
 
-  // onNameChange = (event) => {
-  //   this.setState({name: event.target.value})
-  // }
+  onNameChange = (event) => {
+    this.setState({name: event.target.value})
+  }
 
-  // onEmailChange = (event) => {
-  //   this.setState({email: event.target.value})
-  // }
+  onEmailChange = (event) => {
+    this.setState({email: event.target.value})
+  }
 
-  // onPasswordChange = (event) => {
-  //   this.setState({password: event.target.value})
-  // }
+  onPasswordChange = (event) => {
+    this.setState({password: event.target.value})
+  }
 
   onSubmitSignIn = () => {
-    
-          this.props.onRouteChange('home');
-  }
+    fetch('https://vast-forest-90231.herokuapp.com/register', {
+      method: 'post',
+      headers:{'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        email:this.state.email,
+        password:this.state.password,
+        name:this.state.name
+      })
+    })
+    .then(response=> response.json())
+    .then(user => {
+      if (user.id){
+        this.props.loadUser(user)
+        this.props.onRouteChange('home');
+      }
+    })
+  };
 
   render() {
     return (
